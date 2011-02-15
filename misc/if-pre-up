@@ -1,0 +1,40 @@
+#! /bin/sh
+# Written by Rémi Denis-Courmont
+# Copyright © 2008-2010 Nokia Corporation and/or its subsidiary(-ies).
+
+PATH=/sbin:/bin
+
+IFACE="$1"
+
+if test -z "$IFACE"; then
+	echo "Usage: $0 <interface>" >&2
+	exit 1
+fi
+
+ADDR=
+PEER=
+case "$IFACE" in
+	usbpn*)
+		ADDR="0x10"
+		PEER="0x00 0x6C"
+		;;
+	mcsaab*|phonet*)
+		ADDR="0x6C"
+		PEER="0x00"
+		;;
+	upnlink*)
+		ADDR="0x6C"
+		PEER="0x10"
+		;;
+	*)
+		echo "Unknown Phonet interface type: $IFACE" >&2
+		exit 1
+esac
+
+if test "$ADDR"; then
+	phonet -a "$ADDR" -i "$IFACE"
+fi
+for p in $PEER; do
+	pnroute add "$p" "$IFACE"
+done
+ip link set dev "$IFACE" up || ifconfig "$IFACE" up || exit $?

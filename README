@@ -1,0 +1,8 @@
+phonet-utils
+=============
+
+This small package provides a few command line tools for Linux Phonet:
+
+ - phonet: adds, removes and lists Phonet interface addresses
+ - pnroute: adds, removes and lists Phonet routes
+ - pnstat: lists open local Phonet sockets

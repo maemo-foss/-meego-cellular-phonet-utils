@@ -1,0 +1,11 @@
+# This file autoconfigures Phonet and any new Phonet network interface.
+
+SUBSYSTEM!="net", GOTO="phonet_utils_netif_end"
+ACTION!="add", GOTO="phonet_utils_netif_end"
+
+ENV{INTERFACE}=="phonet[0-9]*", RUN+="/lib/phonet-utils/if-pre-up $env{INTERFACE}"
+ENV{INTERFACE}=="mcsaab[0-9]*", RUN+="/lib/phonet-utils/if-pre-up $env{INTERFACE}"
+ENV{INTERFACE}=="usbpn[0-9]*", RUN+="/lib/phonet-utils/if-pre-up $env{INTERFACE}"
+ENV{INTERFACE}=="upnlink[0-9]*", RUN+="/lib/phonet-utils/if-pre-up $env{INTERFACE}"
+
+LABEL="phonet_utils_netif_end"
